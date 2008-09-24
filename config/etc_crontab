@@ -1,0 +1,33 @@
+# /etc/crontab: system-wide crontab
+# Unlike any other crontab you don't have to run the `crontab'
+# command to install the new version when you edit this file.
+# This file also has a username field, that none of the other crontabs do.
+
+SHELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+# m h dom mon dow user	command
+#17 *	* * *	root    run-parts --report /etc/cron.hourly
+25 4	* * *	root	test -x /usr/sbin/anacron || run-parts --report /etc/cron.daily
+47 4	* * 7	root	test -x /usr/sbin/anacron || run-parts --report /etc/cron.weekly
+52 4	1 * *	root	test -x /usr/sbin/anacron || run-parts --report /etc/cron.monthly
+
+# art piece crontabs
+
+# fight with motion, which doesn't want to intialize properly after boot
+* * * * * root /usr/bin/ruby /art/scripts/delayed_reset.rb >> /art/logs/master.log 2>>/art/logs/master.log
+
+# create a persistent thermometer server
+* * * * * root /usr/bin/lockrun --lockfile /tmp/thermometer_server.lockrun -- /usr/bin/ruby /art/scripts/thermometer_server.rb >> /art/logs/master.log 2>>/art/logs/master.log
+
+# start the camera readers
+* * * * * root /usr/bin/lockrun --lockfile /tmp/motion_cameras.lockrun -- /bin/bash -x /art/scripts/start_cameras.sh >> /art/logs/master.log 2>>/art/logs/master.log
+
+# push camera info to thermometer
+* * * * * root /usr/bin/lockrun --lockfile /tmp/update_temperature.lockrun -- /usr/bin/ruby /art/scripts/update_temperature_from_environment.rb >> /art/logs/master.log 2>>/art/logs/master.log
+
+# start various media players
+* * * * * root /usr/bin/lockrun --lockfile /tmp/play_music.lockrun -- /usr/bin/ruby /art/scripts/player.rb music >> /art/logs/master.log 2>>/art/logs/master.log
+* * * * * root /usr/bin/lockrun --lockfile /tmp/play_video.lockrun -- /usr/bin/ruby /art/scripts/player.rb video >> /art/logs/master.log 2>>/art/logs/master.log
+* * * * * root /usr/bin/lockrun --lockfile /tmp/play_subtitles.lockrun -- /usr/bin/ruby /art/scripts/player.rb subtitles >> /art/logs/master.log 2>>/art/logs/master.log
+* * * * * root /usr/bin/lockrun --lockfile /tmp/play_spoken.lockrun -- /usr/bin/ruby /art/scripts/player.rb spoken >> /art/logs/master.log 2>>/art/logs/master.log

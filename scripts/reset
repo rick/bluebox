@@ -1,0 +1,2 @@
+#!/bin/bash
+/bin/ps auxwww | /bin/grep -e subtitle -e mplayer -e mpg123 -e player.rb -e temperature -e thermometer -e motion | /bin/grep -v -e grep -e vim | /usr/bin/awk '{print $2}' | /usr/bin/xargs kill -9

@@ -1,0 +1,14 @@
+#!/usr/bin/perl -w
+
+use strict;
+use vars qw(@lines $i $temp $pick);
+
+# shuffle a file (sucks file into RAM!)
+@lines = <>;
+for ($i = 0; $i < scalar(@lines) - 1; $i++) {
+    $pick = int(rand(scalar(@lines) - $i)) + $i;
+    $temp = $lines[$i];
+    $lines[$i] = $lines[$pick];
+    $lines[$pick] = $temp;
+    print $lines[$i];
+}

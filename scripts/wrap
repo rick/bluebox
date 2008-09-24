@@ -1,0 +1,8 @@
+#!/usr/bin/perl -w
+
+use Text::Wrap;
+use strict;
+
+$Text::Wrap::columns = shift(@ARGV) || 72;
+$Text::Wrap::huge = "overflow";
+print wrap('', '', join(' ', map {chomp; $_} <>));

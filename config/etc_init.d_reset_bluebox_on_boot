@@ -1,0 +1,2 @@
+chvt 12
+touch /tmp/last_rebooted

@@ -1,0 +1,6 @@
+#!/bin/bash
+/usr/bin/watch -n1 'top -b -n1 | head -11; echo " "; \
+                    ps auxwww | /bin/grep -e player -e media -e reset -e temperature -e mplayer -e mpg123 -e motion -e thermometer | /bin/grep -v -e grep -e lockrun ; /bin/echo " "; \
+                    df -h /art; echo ""; \
+                    /usr/bin/tail -10 /art/logs/master.log; echo " "; \
+                    /usr/bin/tail -800 /art/logs/master.log | grep "now playing" | tail -10'
