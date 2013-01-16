@@ -22,6 +22,4 @@ while true do
   target_duration = rand(90) + 5
   offset = random_offset(length, target_duration)
   play_movie(file, length, offset, target_duration)
-
-  exit 0
 end
